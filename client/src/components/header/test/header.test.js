@@ -3,7 +3,13 @@ import { screen } from '@testing-library/react';
 import Header from '..';
 
 describe('<Header />', () => {
-    it('render Header component', () => {
-        render(<Header />);
+    global.fetch = jest.fn().mockImplementation(() => ({
+        json: () => ({
+            name: 'OleG',
+        }),
+    }));
+    it('render Header component', async () => {
+        const { findByText } = render(<Header />);
+        expect(await findByText(/OleG/)).toBeInTheDocument();
     });
 });
