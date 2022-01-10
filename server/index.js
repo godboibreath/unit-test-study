@@ -1,7 +1,8 @@
-const http = require('http-server');
 const express = require('express');
+const expressWs = require('express-ws');
 
 const app = express();
+expressWs(app);
 
 app.listen(3000, (err) => {
     if (err) {
@@ -41,4 +42,28 @@ app.get('/get-name', (req, res) => {
     });
     res.send(data);
     console.log('Sended data: ', data);
+});
+
+app.ws('/web-socket', (ws, req) => {
+    ws.on('message', (message) => {
+        let timer;
+        switch (message) {
+            case 'start-random':
+                timer = setInterval(
+                    () =>
+                        ws.send(
+                            JSON.stringify({
+                                value: Math.floor(Math.random() * 100),
+                            }),
+                        ),
+                    3500,
+                );
+                break;
+            case 'stop-random':
+                clearInterval(timer);
+                break;
+            default:
+                break;
+        }
+    });
 });
