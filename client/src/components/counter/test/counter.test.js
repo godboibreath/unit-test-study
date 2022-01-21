@@ -1,5 +1,6 @@
 import React from 'react';
 import Counter from '..';
+import { screen } from '@testing-library/react';
 
 describe('<Counter />', () => {
     beforeAll(() => {
@@ -11,7 +12,9 @@ describe('<Counter />', () => {
             }),
         }));
         global.WebSocket.event = {
-            value: 58,
+            data: JSON.stringify({
+                value: 58,
+            }),
         };
     });
     // it('render component', () => {
@@ -24,7 +27,15 @@ describe('<Counter />', () => {
         const { queryByText, findByText } = render(<Counter />);
         expect(queryByText(/logged/i)).toBeNull();
         expect(await findByText(/logged/i)).toBeInTheDocument();
+        screen.debug();
     });
+
+    // it('should have logged', async () => {
+    //     const { getByText, findByText } = render(<Counter />);
+    //     expect(getByText(/0%/i)).toBeInTheDocument();
+    //     screen.debug();
+    //     expect(await screen.findByText('58%')).toBeInTheDocument();
+    // });
 
     afterAll(() => {
         global.fetch = undefined;

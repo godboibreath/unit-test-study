@@ -13,7 +13,9 @@ export default ({ value = 0 }) => {
                     background: 'red',
                     width: `${value}%`,
                 }}
-            ></div>
+            >
+                {value}%
+            </div>
         </div>
     );
 };
